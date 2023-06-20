@@ -54,8 +54,9 @@ Enter the folder where the repository was downloaded.
 #### Using telnet (Online)
 ` telnet [computer ipaddress] [server port #]  `
 
+&nbsp;
 
-
+&nbsp;
 
 ## Commands to run (As outlined in "p3.pdf" section 3)
 ---
