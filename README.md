@@ -70,9 +70,9 @@ the command outputs to the user: `OKS`
 
 #### Use case
 `SET` **{press enter}**   
-[`Combine length of `[key] and [value]`, or higher] **{press enter}**   
-`[key]` **{press enter}**  
-`[value]` **{press enter}**    
+[`Combine length of [key] and [value]`, or higher] **{press enter}**    
+`[key]` **{press enter}**    
+`[value]` **{press enter}**      
 
 #### Example
 `SET`   
