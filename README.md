@@ -90,7 +90,7 @@ the command outputs to the user the keys value
 
 #### Use Case   
 `GET` **{press enter}**   
-[`Length of [key]`, or`higher] **{press enter}**  
+[`Length of [key]`, or higher] **{press enter}**   
 `[key]` **{press enter}**  
 
 #### Example
