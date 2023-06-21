@@ -1,4 +1,4 @@
-# C multi-user database
+# C Multi-User Database
 
 ## Introduction
 ---
