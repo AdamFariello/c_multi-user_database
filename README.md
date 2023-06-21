@@ -70,7 +70,7 @@ the command outputs to the user: `OKS`
 
 #### Use case
 `SET` **{press enter}**   
-[Combine length of: `[key]` and `[value]`, or higher] **{press enter}**   
+[`Combine length of `[key] and [value]`, or higher] **{press enter}**   
 `[key]` **{press enter}**  
 `[value]` **{press enter}**    
 
@@ -90,13 +90,13 @@ the command outputs to the user the keys value
 
 #### Use Case   
 `GET` **{press enter}**   
-[Length of `[key]`, or higher] **{press enter}**  
+[`Length of [key]`, or`higher] **{press enter}**  
 `[key]` **{press enter}**  
 
 #### Example
-`GET`
-`4`
-`day`
+`GET`   
+`4`    
+`day`    
 
 &nbsp;
 
