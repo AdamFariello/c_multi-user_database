@@ -13,15 +13,15 @@
 #include "list.c"
 #include "strbuf.c"
 
-int running=1;
-struct conArg{
+int running = 1;
+struct conArg {
 	struct sockaddr_storage addr;
 	socklen_t addr_len;
 	int fd;
 };
 
-void handler(int signal){
-	running=0;
+void handler(int signal) {
+	running = 0;
 }
 
 void set (struct conArg * con, int commandLength) {
@@ -38,20 +38,20 @@ void set (struct conArg * con, int commandLength) {
 	sb_concatClear(&strbufData, data);
 
 	commandLength -= (strlen(strbufKey.data) + strlen(strbufData.data));	
-	commandLength-=2;
+	commandLength -= 2;
 	if (commandLength < 0) {
 		printf("ERR\nLEN\n");
 		return;
 	}
 
 	list *temp = findList(strbufKey.data);
-	if (temp == NULL)
-		temp=enqueueList(strbufKey.data, strbufData.data);
+	if (temp == NULL) {
+		temp = enqueueList(strbufKey.data, strbufData.data);
+	}
 
 	//String SetUp
 	strbuf_t strbuf[3];
-	for (int i=0; i<3; i++)
-		sb_init(&strbuf[i], 1);
+	for (int i = 0; i < 3; i++) { sb_init(&strbuf[i], 1); }	
 	sb_concat(&strbuf[0], "OKS\n");
 	sb_concat(&strbuf[1], temp->key);
 	sb_append(&strbuf[1], '\n');
@@ -59,12 +59,14 @@ void set (struct conArg * con, int commandLength) {
 	sb_append(&strbuf[2], '\n');	
 	
 	//Allows printf to function normally again
-	if (strstr(strbuf[1].data, "NULL") == NULL && strstr(strbuf[2].data, "NULL") == NULL)
-		for (int i = 0; i < 3; i++) 
-			printf("%s", strbuf[i].data);	
-	else
+	if (strstr(strbuf[1].data, "NULL") == NULL && 
+	    strstr(strbuf[2].data, "NULL") == NULL) {
+		for (int i = 0; i < 3; i++) {
+			printf("%s", strbuf[i].data);
+		}	
+	} else {
 		printf("ERR\nSRV\n");
-	//printf("\n");
+	}
 }
 
 void get (struct conArg * con, int commandLength) {
@@ -83,9 +85,8 @@ void get (struct conArg * con, int commandLength) {
 
 	//String SetUp
 	strbuf_t strbuf[3];
-	for (int i = 0; i < 3; i++) 
-		sb_init(&strbuf[i], 1);
-	
+	for (int i = 0; i < 3; i++) { sb_init(&strbuf[i], 1); }
+
 	list * temp = findList(strbufKey.data);
 	if (temp != NULL) {
 		sb_concat(&strbuf[0], "OKG\n");
@@ -93,20 +94,21 @@ void get (struct conArg * con, int commandLength) {
 		sb_append(&strbuf[1], '\n');
 		sb_concat(&strbuf[2], temp->data);
 		sb_append(&strbuf[2], '\n');	
-	}
-	else {
+	} else {
 		sb_concat(&strbuf[0], "ERR\n");
 		sb_concat(&strbuf[1], "KNF");
 		sb_concat(&strbuf[2], "\n");
 	}
 
 	//Print
-	if (strstr(strbuf[1].data, "NULL") == NULL && strstr(strbuf[2].data, "NULL") == NULL)
-		for (int i = 0; i < 3; i++) 
-			printf("%s", strbuf[i].data);	
-	else
+	if (strstr(strbuf[1].data, "NULL") == NULL && 
+	    strstr(strbuf[2].data, "NULL") == NULL) {
+		for (int i = 0; i < 3; i++) { 
+			printf("%s", strbuf[i].data);
+		}	
+	} else {
 		printf("ERR\nSRV\n");
-	//printf("\n");
+	}
 }
 
 void del (struct conArg * con, int commandLength) {
@@ -125,9 +127,8 @@ void del (struct conArg * con, int commandLength) {
 
 	//String SetUp
 	strbuf_t strbuf[3];
-	for (int i = 0; i < 3; i++) 
-		sb_init(&strbuf[i], 1);
-
+	for (int i = 0; i < 3; i++) { sb_init(&strbuf[i], 1); }
+	
 	list * temp = findList(strbufKey.data);
 	if (temp != NULL) {
 		sb_concat(&strbuf[0], "OKD\n");
@@ -136,20 +137,21 @@ void del (struct conArg * con, int commandLength) {
 		sb_concat(&strbuf[2], temp->data);
 		sb_append(&strbuf[2], '\n');	
 		deleteEntryList(temp);
-	}
-	else {
+	} else {
 		sb_concat(&strbuf[0], "ERR\n");
 		sb_concat(&strbuf[1], "KNF");
 		sb_concat(&strbuf[2], "\n");
 	}
 
 	//Print
-	if (strstr(strbuf[1].data, "NULL") == NULL && strstr(strbuf[2].data, "NULL") == NULL)
-		for (int i = 0; i < 3; i++) 
-			printf("%s", strbuf[i].data);	
-	else
+	if (strstr(strbuf[1].data, "NULL") == NULL && 
+	    strstr(strbuf[2].data, "NULL") == NULL) {
+		for (int i = 0; i < 3; i++) {
+			printf("%s", strbuf[i].data);
+		}	
+	} else {
 		printf("ERR\nSRV\n");
-	//printf("\n");
+	}
 }
 
 /*server*/
@@ -158,8 +160,13 @@ void *switcher(void *arg){
 	char host[100], port[10];
 	struct conArg *con=(struct conArg *)arg;
 	
-	int name=getnameinfo((struct sockaddr *) &con->addr, con->addr_len, host, 100, port, 10, NI_NUMERICSERV);
-	if (name!=0){
+	int name = getnameinfo(
+			(struct sockaddr *) 
+			&con->addr, con->addr_len, 
+			host, 100, port, 10, NI_NUMERICSERV
+		   );
+	
+	if (name != 0) {
 		printf("Get name error\n");
 		close(con->fd);
 		return NULL;
@@ -178,19 +185,19 @@ void *switcher(void *arg){
 		sb_concatClear(&temp, command);
        	
 		printf("\n");
-		if (strcmp(temp.data, "SET") == 0) 
+		if (strcmp(temp.data, "SET") == 0) { 
 			set(con, commandLength);
-		else if(strcmp(temp.data, "GET") == 0)
+		} else if(strcmp(temp.data, "GET") == 0) {
 			get(con, commandLength);
-		else if(strcmp(temp.data, "DEL") == 0) 
+		} else if(strcmp(temp.data, "DEL") == 0) { 
 			del(con, commandLength);
-		else { 
+		} else { 
 			printf("ERR\nBAD\n");
 			if (--temp.used != 3)
 				printf("ERR\nLEN\n");
-			//printf("\n");
 		}
 	}
+
 	printf("ERR\nKDE\n");
 	close(con->fd);
 	free(con);
@@ -205,8 +212,8 @@ int server(char* port){
 	hint.ai_socktype=SOCK_STREAM;
 	hint.ai_flags=AI_PASSIVE;
 
-	int err=getaddrinfo(NULL, port, &hint, &resInfo);
-	if(err!=0){
+	int err = getaddrinfo(NULL, port, &hint, &resInfo);
+	if(err != 0){
 		printf("error: getaddrinfo\n");
 		return -1;
 	}
@@ -215,9 +222,9 @@ int server(char* port){
 	struct addrinfo *ptr;
 	int sfd;
 	//ptr->ai_protocol -> ptr = ptr = ptr->ai_protocol
-	for (ptr=resInfo; ptr!=NULL; ptr = ptr->ai_next){
+	for(ptr=resInfo; ptr!=NULL; ptr = ptr->ai_next) {
 		sfd=socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
-		if (sfd==-1){
+		if(sfd == -1){
 			printf("Fail to create socket\n");
 			continue;
 		}
@@ -225,14 +232,11 @@ int server(char* port){
 		//bind and listen
 		int b=bind(sfd, ptr->ai_addr, ptr->ai_addrlen);
 		int l=listen(sfd, 5);
-		if (b==0 && l==0){
-			//printf("Bind and listen is good\n");
-			break;
-		}
+		if(b==0 && l==0) { break; }
 		close(sfd);
 	}
 
-	if (ptr==NULL){
+	if (ptr == NULL) {
 		printf("No bind\n");
 		return -1;
 	}
@@ -249,19 +253,23 @@ int server(char* port){
 
 	struct conArg *arg;
 	pthread_t conThr;
-	while (running){
+	while (running) {
 		//printf("Waiting for connection\n");
-		arg=malloc(sizeof(struct conArg));
-		arg->addr_len=sizeof(struct sockaddr_storage);
-		arg->fd=accept(sfd, (struct sockaddr *)&arg->addr, &arg->addr_len);
-		if (arg->fd==-1){
-			//printf("Fail to accept. sfd:%d\n", sfd);
+		arg = malloc(sizeof(struct conArg));
+		arg->addr_len = sizeof(struct sockaddr_storage);
+		arg->fd = accept(
+				sfd, 
+				(struct sockaddr *)&arg->addr, 
+				&arg->addr_len
+			  );
+
+		if (arg->fd == -1) {
 			perror("accept");
 			continue;
 		}
 
-		int thr=pthread_create(&conThr, NULL, switcher, arg);
-		if (thr!=0){
+		int thr = pthread_create(&conThr, NULL, switcher, arg);
+		if (thr != 0) {
 			printf("Fail to create thread\n");
 			close(arg->fd);
 			free(arg);
@@ -270,12 +278,11 @@ int server(char* port){
 		pthread_detach(conThr);
 	}
 
-
 	return 0;
 }
 
 int main (int argc, char **argv) {
-	if (argc!=2){
+	if (argc != 2) {
 		printf("argument line error\n");
 		return EXIT_FAILURE;
 	}
@@ -284,5 +291,6 @@ int main (int argc, char **argv) {
 		printf("Fail to run server\n");
 		return EXIT_FAILURE;
 	}
+
 	return EXIT_SUCCESS;
 }

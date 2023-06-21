@@ -32,6 +32,8 @@ Enter the folder where the repository was downloaded.
 ### (ALTERNATIVELY) Compiling the new version of the main program 
 ` make allNew `
 
+**This is just server.c, but with a different coding format*
+
 ### (OPTIONAL) Checking dependencies
 ` make allDepends `   
 
